@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 from os import environ
 from OdooLocust import OdooLocust
-from compose_mount.odoo_task_set import OdooTaskSet
+from .compose_mount.odoo_task_set import OdooTaskSet
 
 class Manager(OdooLocust):
     """
