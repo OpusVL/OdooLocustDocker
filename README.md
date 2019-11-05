@@ -3,21 +3,49 @@ This is a repo based on https://github.com/nseinlet/OdooLocust
 
 
 # How to use it
-Params:
-* ODOO_LOGIN = odoo user
-* ODOO_PASSWORD = odoo user password
-* ODOO_HOST = odoo host
-* ODOO_DATABASE = odoo database
-* ODOO_PORT = odoo port
+Extend `docker-compose.override.yml` or create a `docker-compose.locust.yml` file (and ref it during `docker-compose` commands with `-f docker-compose.locust.yml`) with the following:
 
-## First, build the image:
+```yaml
+version: '3'
+services:
+  odoolocust:
+    image: quay.io/opusvl/odoo-locust:latest
+    depends_on:
+      - odoo # May need changing if your odoo service is defined as something else in docker-compose.yml
+    environment:
+      ODOO_LOGIN: changeme # This is the res.users record login locust will auth with when running the tests
+      ODOO_PASSWORD: changeme # This is the res.users record password locust will auth with when running the tests
+      ODOO_HOST: odoo # May need changing if your odoo service is defined as something else in docker-compose.yml
+      ODOO_DATABASE: changeme # This is the database name you want to connect to
+      ODOO_PORT: 8069 # This is the port your odoo service is exposed to
+    ports:
+      - 8089:8089 # This is the port to expose the locust web interface to
+    volumes:
+      - "./locust_tests:/home/OdooLocust/tests/compose_mount" # This is where the `odoo_task_set.py` file will be situated
 
-* > docker image build . -t odoolocust:1.0
+```
 
-## Then, just run the container:
-* > docker run -e ODOO_LOGIN=user -e ODOO_PASSWORD=passwd \
-    -e ODOO_HOST=my_hostname -e ODOO_DATABASE="dev" -e ODOO_PORT=8069 \
-    --rm --name pylocust -p 8089:8089 -t odoolocust:1.0
+Then start the container. The Locust web interface will be on whatever port you mapped to `8089`.
 
-# IMPORTANT NOTE !!!
-If used for testing/dev purposes on o local env, do not use hosts like '127.0.0.1' of 'localhost', since the tests are going to be executed inside a container and localhost will refer to itself (the container) and will return a no conection issue.
+Visit the web interface and get running
+
+
+# What's changed from https://github.com/Ozrlz/OdooLocustDocker
+I've moved the main test script which is what will change from project to project into a seperate folder which is what we will mount.
+
+# Typical project structure
+So a typical project with a locust test will look something like this:
+```
+├── docker-compose-locust
+├── docker-compose.locust.yml
+├── docker-compose.override.yml
+├── docker-compose.yml
+├── locust_tests
+    └── odoo_task_set.py
+```
+`docker-compose-locust` is just a bash script that uses `-f` to pull in all relvant compose files like so:
+```bash
+#/bin/bash
+docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.locust.yml $@
+```
+So when you want to run with locust, you just run `./docker-compose-locust up -d`
