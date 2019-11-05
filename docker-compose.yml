@@ -1,0 +1,12 @@
+version: '3'
+services:
+  odoolocust:
+    image: quay.io/opusvl/odoo-locust:O2191-wave-1
+    environment:
+      ODOO_LOGIN: admin
+      ODOO_PASSWORD: London12
+      ODOO_HOST: odoo
+      ODOO_DATABASE: nhclinical
+      ODOO_PORT: 8069
+    ports:
+      - 8089:8089

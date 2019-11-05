@@ -21,7 +21,7 @@ services:
     ports:
       - 8089:8089 # This is the port to expose the locust web interface to
     volumes:
-      - "./locust_tests:/home/OdooLocust/tests/compose_mount" # This is where the `odoo_task_set.py` file will be situated
+      - "./odoo_task_set.py:/home/OdooLocust/tests/odoo_task_set.py" # This is the test file that will be loaded. It _MUST_ be named `odoo_task_set.py`
 
 ```
 
@@ -40,8 +40,7 @@ So a typical project with a locust test will look something like this:
 ├── docker-compose.locust.yml
 ├── docker-compose.override.yml
 ├── docker-compose.yml
-├── locust_tests
-    └── odoo_task_set.py
+├── odoo_task_set.py
 ```
 `docker-compose-locust` is just a bash script that uses `-f` to pull in all relvant compose files like so:
 ```bash
