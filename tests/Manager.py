@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
 from os import environ
-from OdooLocust import OdooLocust
+from OdooRPCLocust import OdooRPCLocust
 from odoo_task_set import OdooTaskSet
 
-class Manager(OdooLocust):
+class Manager(OdooRPCLocust):
     """
     Manager of the tasks
 

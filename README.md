@@ -33,6 +33,10 @@ Visit the web interface and get running
 # What's changed from https://github.com/Ozrlz/OdooLocustDocker
 I've moved the main test script which is what will change from project to project into a seperate folder which is what we will mount.
 
+Removed the need for `connect.py` file.
+
+Moved base to use `OdooRPCLocust` rather than `OdooLocust` repo, which uses `odoorpc` as opposed to `openerplib` which has more functionality and is slightly nicer to use.
+
 # Typical project structure
 So a typical project with a locust test will look something like this:
 ```
