@@ -1,6 +1,6 @@
 FROM python:2.7
-
-RUN git clone https://github.com/subteno-it/OdooRPCLocust.git /home/ && cd /home/ && \
+# Cloning opus fork for now, until https://github.com/subteno-it/OdooRPCLocust/pull/1 is merged upstream.
+RUN git clone https://github.com/OpusVL/OdooRPCLocust.git --branch O2191-wave-1 /home/ && cd /home/ && \
         python setup.py build && \
         python setup.py install
 
