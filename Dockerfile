@@ -4,7 +4,8 @@ RUN git clone https://github.com/OpusVL/OdooRPCLocust.git --branch O2191-wave-1 
         python setup.py build && \
         python setup.py install
 
-RUN pip install odoorpc
+ADD ./requirements.txt /
+RUN pip install -r /requirements.txt
 
 ADD ./tests/ /home/OdooLocust/tests/
 
