@@ -1,2 +1,2 @@
 odoorpc
-bs4
+lxml
